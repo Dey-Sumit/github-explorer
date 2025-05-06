@@ -119,16 +119,32 @@ src/
 └── App.tsx           # Main App component
 ```
 
-## 🌱 Git Workflow
+## Git Workflow
 
-This project follows a structured branching strategy:
+This project follows a structured Git workflow:
 
-- **main**: Production-ready code
-- **development**: Active development branch
-- **feature/\***: Feature branches created from development
-- **fix/\***: Bug fix branches
+### Branches
+- `main`: Production-ready code only
+- `development`: Active development branch
+- All new features and fixes are developed in feature branches created from `development`
 
-All feature and fix branches are merged back into development via pull requests, and development is merged into main when ready for production.
+### Workflow Process
+1. Create a feature branch from `development`: `git checkout -b feature/your-feature-name`
+2. Make your changes and commit them using conventional commit messages
+3. Push your branch to GitHub: `git push -u origin feature/your-feature-name`
+4. Create a Pull Request to merge into `development`
+5. After code review, merge the PR into `development`
+6. When ready for release, merge `development` into `main` with proper release notes and Git tags
+
+### Commit Message Convention
+We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
+- `feat:` for new features
+- `fix:` for bug fixes
+- `docs:` for documentation changes
+- `style:` for formatting changes
+- `refactor:` for code refactoring
+- `test:` for adding or fixing tests
+- `chore:` for tooling and dependency updates
 
 ## 📄 License
 
