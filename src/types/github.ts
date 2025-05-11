@@ -1,10 +1,12 @@
 export interface UserRepositoriesVariables {
   login: string;
-  first: number;
+  first?: number | null;
   after?: string | null;
+  last?: number | null;
+  before?: string | null;
 }
 
-interface Repository {
+export interface Repository {
   id: string;
   name: string;
   description: string | null;
@@ -12,6 +14,10 @@ interface Repository {
   stargazerCount: number;
   forkCount: number;
   updatedAt: string;
+  primaryLanguage?: {
+    name: string;
+    color: string;
+  } | null;
 }
 
 interface RepositoryEdge {
@@ -32,6 +38,9 @@ interface RepositoriesConnection {
 }
 
 interface User {
+  login: string;
+  bio: string | null;
+  avatarUrl: string;
   repositories: RepositoriesConnection;
 }
 

@@ -17,11 +17,8 @@ const loggingLink = new ApolloLink((operation, forward) => {
     // Log the operation details
     const { operationName } = operation;
     console.group(`🚀 Apollo GraphQL: ${operationName}`);
-    console.log('Operation:', operation.operationName);
     console.log('Query:', operation.query);
     console.log('Variables:', operation.variables);
-    console.log('Context:', operation.getContext());
-    console.timeStamp(`${operationName} started`);
     console.groupEnd();
   }
 
@@ -32,7 +29,6 @@ const loggingLink = new ApolloLink((operation, forward) => {
       console.group(`✅ Apollo GraphQL Result: ${operation.operationName}`);
       console.log('Data:', result.data);
       console.log('Errors:', result.errors);
-      console.timeEnd(`${operation.operationName}`);
       console.groupEnd();
     }
     return result;
@@ -104,11 +100,25 @@ const link = ApolloLink.from([
   httpLink,
 ]);
 
-// Create Apollo Client
+const cache = new InMemoryCache({
+  typePolicies: {
+    User: {
+      keyFields: ['login'],
+      fields: {
+        repositories: {
+          keyArgs: ['orderBy'],
+          merge(existing, incoming) {
+            return incoming;
+          },
+        },
+      },
+    },
+  },
+});
+
 const githubClient = new ApolloClient({
   link,
-  cache: new InMemoryCache(),
-  // Additional helpful dev tools
+  cache,
   ...(isDev && {
     connectToDevTools: true,
     defaultOptions: {

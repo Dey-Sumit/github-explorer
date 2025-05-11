@@ -108,7 +108,7 @@ const useStyles = makeStyles(theme => ({
 const RepositoryList = () => {
   const classes = useStyles();
   const theme = useTheme();
-  //  const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
+
   const [pageSize] = useState(6);
 
   const username = 'Dey-Sumit';
@@ -141,7 +141,7 @@ const RepositoryList = () => {
 
   const repositories = data?.user?.repositories?.edges || [];
   const pageInfo = data?.user?.repositories?.pageInfo;
-  const userInfo = data?.user || {};
+  const userInfo = data?.user;
 
   const handleNextPage = () => {
     if (!pageInfo?.hasNextPage) return;
@@ -173,7 +173,7 @@ const RepositoryList = () => {
       {/* User Header */}
       <Box className={classes.header}>
         <Avatar
-          src={userInfo.avatarUrl}
+          src={userInfo?.avatarUrl}
           alt={username}
           className={classes.avatar}
         >
@@ -184,7 +184,7 @@ const RepositoryList = () => {
             {username}
           </Typography>
           <Typography variant="body1" color="textSecondary">
-            {userInfo.bio || `GitHub repositories for ${username}`}
+            GitHub repositories for ${username}
           </Typography>
         </Box>
       </Box>
@@ -233,19 +233,6 @@ const RepositoryList = () => {
                           variant="outlined"
                         />
                       </Box>
-                      <Chip
-                        label={node.primaryLanguage?.name || 'N/A'}
-                        size="small"
-                        style={{
-                          backgroundColor:
-                            node.primaryLanguage?.color ||
-                            theme.palette.grey[300],
-                          color: theme.palette.getContrastText(
-                            node.primaryLanguage?.color ||
-                              theme.palette.grey[300]
-                          ),
-                        }}
-                      />
                     </Box>
                   </CardContent>
                 </Card>
@@ -256,7 +243,7 @@ const RepositoryList = () => {
           {/* Pagination Controls */}
           <Box className={classes.paginationContainer}>
             <IconButton
-              disabled={!pageInfo.hasPreviousPage}
+              disabled={!pageInfo?.hasPreviousPage}
               onClick={handlePrevPage}
               aria-label="Previous page"
             >

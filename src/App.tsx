@@ -5,8 +5,8 @@ import { Typography, Paper, Box } from '@material-ui/core';
 import { ApolloProvider } from '@apollo/client';
 import theme from './theme';
 import Layout from './components/layout/Layout';
-import RepositoryList from './components/features/RepositoryList';
 import githubClient from './services/github/client';
+import RepositoryList from './components/repository/repository-list';
 
 const App: React.FC = () => {
   return (
