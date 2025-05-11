@@ -43,7 +43,6 @@ const RepositoryList: React.FC = () => {
 
   // This is the key - currentCursor changes when currentPage changes
   const currentCursor = pageInfo.cursors[pageInfo.currentPage - 1];
-  console.log({ currentCursor });
 
   const { loading, error, data, fetchMore, networkStatus } = useQuery<
     UserRepositoriesData,
@@ -56,12 +55,6 @@ const RepositoryList: React.FC = () => {
     },
     fetchPolicy: 'cache-first',
     notifyOnNetworkStatusChange: true,
-    onCompleted: data => {
-      console.log('Data loaded for page', pageInfo.currentPage, { data });
-    },
-    onError: e => {
-      console.error('Failed to load repositories:', e);
-    },
   });
 
   const repositories = data?.user?.repositories?.edges || [];

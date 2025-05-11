@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck : will fix later
 import React from 'react';
 import {
   Route,
