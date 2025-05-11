@@ -1,6 +1,6 @@
 {
   "name": "github-explorer",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "engines": {
@@ -35,6 +35,7 @@
     "eslint": "8.54.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "8.8.0",
+    "eslint-import-resolver-typescript": "^4.3.4",
     "eslint-plugin-import": "2.29.0",
     "eslint-plugin-jsx-a11y": "6.8.0",
     "eslint-plugin-prettier": "4.2.1",
@@ -51,8 +52,16 @@
     "webpack-dev-server": "^4"
   },
   "dependencies": {
+    "@apollo/client": "3.6.2",
+    "@material-ui/core": "4.12.4",
+    "@material-ui/icons": "^4",
+    "@material-ui/lab": "4.0.0-alpha.61",
+    "@types/react-router-dom": "5.3.3",
+    "dotenv": "^16.5.0",
+    "graphql": "^16.11.0",
     "react": "16.10.1",
-    "react-dom": "16.10.1"
+    "react-dom": "16.10.1",
+    "react-router-dom": "5.3.4"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [

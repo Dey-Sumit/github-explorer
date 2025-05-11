@@ -1,5 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
+
+dotenv.config(); // this will update the process.env with environment variables in .env file
 
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -8,6 +12,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.[contenthash].js',
     clean: true,
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
@@ -46,6 +51,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html',
+    }),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env),
     }),
   ],
   devServer: {
