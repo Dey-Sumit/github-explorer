@@ -5,9 +5,9 @@ import {
   Redirect,
   BrowserRouter as Router,
 } from 'react-router-dom';
-import RepositoryDetail from './pages/repository-detail.page';
-import RepositoryList from './pages/repository-list.page';
-import RepositoryNew from './pages/repository-new.page';
+import RepositoryDetail from './components/pages/repository-detail.page';
+import RepositoryList from './components/pages/repository-list.page';
+import RepositoryNew from './components/pages/repository-new.page';
 
 /**
  * Application routes configuration

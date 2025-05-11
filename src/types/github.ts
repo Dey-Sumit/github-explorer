@@ -47,3 +47,14 @@ interface User {
 export interface UserRepositoriesData {
   user: User | null;
 }
+
+export interface CreateRepositoryResponse {
+  createRepository: {
+    repository: {
+      id: string;
+      name: string;
+      description?: string;
+      url: string;
+    };
+  };
+}
