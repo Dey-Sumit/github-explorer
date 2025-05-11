@@ -23,7 +23,7 @@ import {
   UserRepositoriesData,
   UserRepositoriesVariables,
   Repository,
-} from '@/types/github';
+} from '@/types/github.types';
 import { useHistory } from 'react-router-dom';
 
 const ITEMS_PER_PAGE = 6;
@@ -184,7 +184,7 @@ const RepositoryList: React.FC = () => {
                 <Grid item xs={12} sm={6} md={4} key={node.id}>
                   <RepositoryCard
                     repository={node}
-                    onClick={() => handleRepositoryClick(node)}
+                    onClick={handleRepositoryClick}
                   />
                 </Grid>
               ))}

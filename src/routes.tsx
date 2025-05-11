@@ -19,7 +19,7 @@ const Routes: React.FC = () => {
       <Switch>
         <Route exact path="/" component={RepositoryList} />
         <Route path="/new" component={RepositoryNew} />
-        <Route path="/repository/:id" component={RepositoryDetail} />
+        <Route path="/repository/:name" component={RepositoryDetail} />
         <Redirect to="/" />
       </Switch>
     </Router>

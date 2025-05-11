@@ -14,7 +14,7 @@ import {
 import { Alert } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 import { CREATE_REPOSITORY } from '@/services/github/mutations';
-import { CreateRepositoryResponse } from '@/types/github';
+import { CreateRepositoryResponse } from '@/types/github.types';
 
 const useStyles = makeStyles(theme => ({
   paper: {

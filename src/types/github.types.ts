@@ -58,3 +58,31 @@ export interface CreateRepositoryResponse {
     };
   };
 }
+
+export interface PullRequest {
+  id: string;
+  number: number;
+  title: string;
+  state: 'OPEN' | 'CLOSED' | 'MERGED';
+  createdAt: string;
+  url: string;
+  author: {
+    login: string;
+    avatarUrl: string;
+  } | null;
+}
+
+export interface RepositoryDetailParams {
+  name: string;
+}
+
+export interface RepositoryDetailData {
+  repository: Repository & {
+    pullRequests: {
+      totalCount: number;
+      edges: Array<{
+        node: PullRequest;
+      }>;
+    };
+  };
+}
