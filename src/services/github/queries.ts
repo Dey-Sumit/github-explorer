@@ -1,0 +1,78 @@
+import { gql } from '@apollo/client';
+
+export const GET_USER_REPOSITORIES = gql`
+  query GetUserRepositories(
+    $login: String!
+    $first: Int
+    $after: String
+    $last: Int
+    $before: String
+  ) {
+    user(login: $login) {
+      login
+      bio
+      avatarUrl
+      repositories(
+        first: $first
+        after: $after
+        last: $last
+        before: $before
+        orderBy: { field: UPDATED_AT, direction: DESC }
+      ) {
+        totalCount
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+        edges {
+          node {
+            id
+            name
+            description
+            url
+            stargazerCount
+            forkCount
+            updatedAt
+            primaryLanguage {
+              name
+              color
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_REPOSITORY_PULL_REQUESTS = gql`
+  query GetRepositoryPullRequests(
+    $owner: String!
+    $name: String!
+    $first: Int!
+  ) {
+    repository(owner: $owner, name: $name) {
+      pullRequests(
+        first: $first
+        states: [OPEN, CLOSED]
+        orderBy: { field: CREATED_AT, direction: DESC }
+      ) {
+        totalCount
+        edges {
+          node {
+            id
+            number
+            title
+            url
+            state
+            createdAt
+            author {
+              login
+            }
+          }
+        }
+      }
+    }
+  }
+`;
