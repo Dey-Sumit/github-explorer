@@ -30,6 +30,9 @@ module.exports = {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
+      typescript: {
+        alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even if it doesn't contain any source code
+      },
     },
   },
   rules: {

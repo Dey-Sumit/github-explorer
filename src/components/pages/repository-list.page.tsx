@@ -15,15 +15,16 @@ import {
   NavigateNext as NextIcon,
   NavigateBefore as PrevIcon,
 } from '@material-ui/icons';
-import { GET_USER_REPOSITORIES } from '../../services/github/queries';
+import { useRepositoryListStyles } from '@/components/repository/repositoryList.styles';
+import { RepositoryCard } from '@/components/repository/repository-card';
+import UserHeader from '@/components/repository/user-header';
+import { GET_USER_REPOSITORIES } from '@/services/github/queries';
 import {
-  Repository,
   UserRepositoriesData,
   UserRepositoriesVariables,
-} from '../../types/github';
-import { useRepositoryListStyles } from './repositoryList.styles';
-import { RepositoryCard } from './repository-card';
-import UserHeader from './user-header';
+  Repository,
+} from '@/types/github.types';
+import { useHistory } from 'react-router-dom';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -31,6 +32,8 @@ const RepositoryList: React.FC = () => {
   const classes = useRepositoryListStyles();
 
   const username = 'Dey-Sumit';
+
+  const history = useHistory();
 
   // Track page cursors for navigation
   const [pageInfo, setPageInfo] = useState({
@@ -110,10 +113,12 @@ const RepositoryList: React.FC = () => {
     }));
   };
 
-  const handleRepositoryClick = useCallback((repository: Repository) => {
-    console.log('Repository clicked:', repository);
-    // TODO: Navigate to repository details page
-  }, []);
+  const handleRepositoryClick = useCallback(
+    (repository: Repository) => {
+      history.push(`/repository/${repository.name}`);
+    },
+    [history]
+  );
 
   if (loading && !data) {
     return (
@@ -179,7 +184,7 @@ const RepositoryList: React.FC = () => {
                 <Grid item xs={12} sm={6} md={4} key={node.id}>
                   <RepositoryCard
                     repository={node}
-                    onClick={() => handleRepositoryClick(node)}
+                    onClick={handleRepositoryClick}
                   />
                 </Grid>
               ))}

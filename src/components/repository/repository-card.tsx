@@ -9,7 +9,7 @@ import {
   useTheme,
 } from '@material-ui/core';
 import { Star as StarIcon, CallSplit as ForkIcon } from '@material-ui/icons';
-import { Repository } from '../../types/github';
+import { Repository } from '../../types/github.types';
 
 const useStyles = makeStyles(theme => ({
   card: {
