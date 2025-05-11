@@ -58,7 +58,12 @@ const RepositoryDetail: React.FC = () => {
     }
   );
 
-  const handleTabChange = (event, newValue: number) => {
+  const handleTabChange = (
+    event: React.ChangeEvent<unknown>,
+    newValue: number
+  ) => {
+    console.log('Tab changed to:', event);
+
     setTabValue(newValue);
   };
 

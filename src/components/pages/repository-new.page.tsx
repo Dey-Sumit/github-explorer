@@ -55,7 +55,6 @@ const CreateRepository: React.FC = () => {
     CreateRepositoryVariables
   >(CREATE_REPOSITORY, {
     onCompleted: data => {
-      console.log('Repository created:', data);
       // Redirect to repository detail
       if (data?.createRepository?.repository?.id) {
         history.push(`/repository/${data.createRepository.repository.name}`);
