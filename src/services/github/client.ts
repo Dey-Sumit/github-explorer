@@ -106,7 +106,7 @@ const cache = new InMemoryCache({
       keyFields: ['login'],
       fields: {
         repositories: {
-          keyArgs: ['orderBy'],
+          keyArgs: ['orderBy', 'first', 'after'],
           merge(existing, incoming) {
             return incoming;
           },
