@@ -1,5 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import {
@@ -10,12 +8,12 @@ import {
   Container,
   Button,
   Divider,
-} from '@material-ui/core';
+  styled,
+} from '@mui/material';
 import {
   NavigateNext as NextIcon,
   NavigateBefore as PrevIcon,
-} from '@material-ui/icons';
-import { useRepositoryListStyles } from '@/components/repository/repositoryList.styles';
+} from '@mui/icons-material';
 import { RepositoryCard } from '@/components/repository/repository-card';
 import UserHeader from '@/components/repository/user-header';
 import { GET_USER_REPOSITORIES } from '@/services/github/queries';
@@ -28,9 +26,35 @@ import { useHistory } from 'react-router-dom';
 
 const ITEMS_PER_PAGE = 6;
 
-const RepositoryList: React.FC = () => {
-  const classes = useRepositoryListStyles();
+const RootContainer = styled(Container)(({ theme }) => ({
+  padding: theme.spacing(3),
+}));
 
+const LoadingContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  minHeight: '50vh',
+}));
+
+const StyledDivider = styled(Divider)(({ theme }) => ({
+  margin: theme.spacing(2, 0),
+}));
+
+const RepositoriesHeader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  marginBottom: theme.spacing(1),
+}));
+
+const PaginationContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginTop: theme.spacing(4),
+}));
+
+const RepositoryList: React.FC = () => {
   const username = 'Dey-Sumit';
 
   const history = useHistory();
@@ -115,9 +139,9 @@ const RepositoryList: React.FC = () => {
 
   if (loading && !data) {
     return (
-      <Box className={classes.loadingContainer}>
+      <LoadingContainer>
         <CircularProgress />
-      </Box>
+      </LoadingContainer>
     );
   }
 
@@ -132,19 +156,18 @@ const RepositoryList: React.FC = () => {
   }
 
   return (
-    <Container className={classes.root}>
+    <RootContainer>
       <UserHeader username={username} avatarUrl={data?.user?.avatarUrl || ''} />
 
-      <Divider className={classes.divider} />
+      <StyledDivider />
 
-      <Box className={classes.repositoriesHeader}>
-        {/* <CodeIcon style={{ marginRight: theme.spacing(1) }} /> */}
+      <RepositoriesHeader>
         <Typography variant="h5" component="h2">
           Repositories ({totalCount})
         </Typography>
-      </Box>
+      </RepositoriesHeader>
 
-      <Typography variant="body2" color="textSecondary" gutterBottom>
+      <Typography variant="body2" color="text.secondary" gutterBottom>
         Page {pageInfo.currentPage} of {totalPages}
       </Typography>
 
@@ -152,10 +175,15 @@ const RepositoryList: React.FC = () => {
         <Typography>No repositories found</Typography>
       ) : (
         <>
-          <Box style={{ position: 'relative', minHeight: 400 }}>
+          <Box
+            sx={{
+              position: 'relative',
+              minHeight: 400,
+            }}
+          >
             {isLoadingMore && (
               <Box
-                style={{
+                sx={{
                   position: 'absolute',
                   top: 0,
                   left: 0,
@@ -184,7 +212,7 @@ const RepositoryList: React.FC = () => {
             </Grid>
           </Box>
 
-          <Box className={classes.paginationContainer}>
+          <PaginationContainer>
             <Button
               variant="outlined"
               startIcon={<PrevIcon />}
@@ -194,12 +222,12 @@ const RepositoryList: React.FC = () => {
               Previous
             </Button>
 
-            <Box mx={3} display="flex" alignItems="center">
+            <Box sx={{ mx: 3, display: 'flex', alignItems: 'center' }}>
               <Typography variant="body1">
                 Page {pageInfo.currentPage} of {totalPages}
               </Typography>
               {isLoadingMore && (
-                <CircularProgress size={20} style={{ marginLeft: 8 }} />
+                <CircularProgress size={20} sx={{ marginLeft: 1 }} />
               )}
             </Box>
 
@@ -211,10 +239,10 @@ const RepositoryList: React.FC = () => {
             >
               Next
             </Button>
-          </Box>
+          </PaginationContainer>
         </>
       )}
-    </Container>
+    </RootContainer>
   );
 };
 
