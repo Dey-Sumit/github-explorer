@@ -17,7 +17,6 @@ const githubColors = {
   },
 };
 
-// Create a theme instance
 const baseTheme = createTheme({
   palette: {
     mode: 'dark',

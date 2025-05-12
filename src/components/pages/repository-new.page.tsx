@@ -14,12 +14,13 @@ import {
 } from '@mui/material';
 import { CREATE_REPOSITORY } from '@/services/github/mutations';
 import { CreateRepositoryResponse } from '@/types/github.types';
+import { ROUTES } from '@/routes/constants';
 
 const Container = styled(Box)(({ theme }) => ({
   maxWidth: theme.breakpoints.values.md,
   margin: '0 auto',
 }));
-// Styled components
+
 const FormContainer = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
   marginTop: theme.spacing(4),
@@ -64,9 +65,11 @@ const CreateRepository: React.FC = () => {
     onCompleted: data => {
       // Redirect to repository detail
       if (data?.createRepository?.repository?.id) {
-        navigate(`/repository/${data.createRepository.repository.name}`);
+        navigate(
+          ROUTES.getRepositoryDetailPath(data.createRepository.repository.name)
+        );
       } else {
-        navigate('/');
+        navigate(ROUTES.HOME);
       }
     },
   });

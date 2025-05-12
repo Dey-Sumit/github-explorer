@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { GET_REPOSITORY_DETAILS } from '@/services/github/queries';
 import { RepositoryDetailData } from '@/types/github.types';
-import { GITHUB_API } from '@/constants';
+import { GITHUB_API } from '@/services/github/constants';
 import PullRequestList from '../repository/pull-request-list';
 import RepositoryHeader from '../repository/repository-header';
 
