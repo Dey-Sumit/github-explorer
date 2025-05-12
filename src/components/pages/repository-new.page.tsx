@@ -117,11 +117,6 @@ const CreateRepository: React.FC = () => {
             variant="outlined"
             placeholder="my-awesome-repo"
             helperText="Great repository names are short and memorable."
-            InputProps={{
-              sx: {
-                backgroundColor: 'background.paper',
-              },
-            }}
           />
 
           <TextField
