@@ -49,7 +49,14 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     <>
       <StyledAppBar position="static">
         <StyledToolbar>
-          <HeaderLogo variant="h4">GitHux</HeaderLogo>
+          <HeaderLogo variant="h4">
+            <RouterLink
+              to="/"
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              GitHub Explorer
+            </RouterLink>
+          </HeaderLogo>
 
           <Box>
             {isRoot && (

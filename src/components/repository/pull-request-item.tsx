@@ -8,40 +8,84 @@ import {
   Chip,
   Box,
   Link,
-  makeStyles,
-} from '@material-ui/core';
+  styled,
+} from '@mui/material';
 import {
   MergeType as MergeIcon,
   Cancel as CloseIcon,
   Adjust as OpenIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { PullRequest } from '@/types/github.types';
 import { formatDistanceToNow } from '@/utils/date.utils';
 
-const useStyles = makeStyles(theme => ({
-  listItem: {
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: theme.shape.borderRadius,
-    marginBottom: theme.spacing(2),
+// Styled components
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: theme.shape.borderRadius,
+  marginBottom: theme.spacing(2),
+  padding: theme.spacing(2, 3),
+  transition: 'background-color 0.2s',
+  '&:hover': {
+    backgroundColor: 'rgba(255, 255, 255, 0.03)', // Subtle highlight on hover
   },
-  openChip: {
-    backgroundColor: '#28a745',
-    color: 'white',
+}));
+
+const PRLink = styled(Link)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  textDecoration: 'none',
+  '&:hover': {
+    textDecoration: 'underline',
+    color: theme.palette.primary.main,
   },
-  closedChip: {
-    backgroundColor: '#cb2431',
-    color: 'white',
-  },
-  mergedChip: {
-    backgroundColor: '#6f42c1',
-    color: 'white',
-  },
-  secondaryInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: theme.spacing(1),
-    marginTop: theme.spacing(0.5),
-  },
+}));
+
+const PRTitle = styled(Typography)(({ theme }) => ({
+  fontWeight: 600,
+  fontSize: '1rem',
+  marginBottom: theme.spacing(0.5),
+}));
+
+const SecondaryInfo = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+  gap: theme.spacing(1),
+  marginTop: theme.spacing(0.5),
+}));
+
+// GitHub color constants
+const GITHUB_COLORS = {
+  open: '#1f883d', // GitHub green
+  closed: '#cf222e', // GitHub red
+  merged: '#8250df', // GitHub purple
+};
+
+// Custom styled chips for different PR states
+const OpenChip = styled(Chip)(() => ({
+  backgroundColor: GITHUB_COLORS.open,
+  color: 'white',
+  fontWeight: 600,
+  fontSize: '0.75rem',
+}));
+
+const ClosedChip = styled(Chip)(() => ({
+  backgroundColor: GITHUB_COLORS.closed,
+  color: 'white',
+  fontWeight: 600,
+  fontSize: '0.75rem',
+}));
+
+const MergedChip = styled(Chip)(() => ({
+  backgroundColor: GITHUB_COLORS.merged,
+  color: 'white',
+  fontWeight: 600,
+  fontSize: '0.75rem',
+}));
+
+const StyledAvatar = styled(Avatar)(({ theme }) => ({
+  width: theme.spacing(5),
+  height: theme.spacing(5),
+  border: `1px solid ${theme.palette.divider}`,
 }));
 
 interface PullRequestItemProps {
@@ -49,73 +93,72 @@ interface PullRequestItemProps {
 }
 
 const PullRequestItem: React.FC<PullRequestItemProps> = ({ pullRequest }) => {
-  const classes = useStyles();
-
   const formattedDate = formatDistanceToNow(pullRequest.createdAt);
 
-  // Determine chip style and icon based on PR state
-  const getChipProps = () => {
+  // Render the appropriate chip based on PR state
+  const renderStateChip = () => {
     switch (pullRequest.state) {
       case 'OPEN':
-        return {
-          label: 'Open',
-          className: classes.openChip,
-          icon: <OpenIcon fontSize="small" />,
-        };
+        return (
+          <OpenChip
+            icon={<OpenIcon fontSize="small" />}
+            label="Open"
+            size="small"
+          />
+        );
       case 'MERGED':
-        return {
-          label: 'Merged',
-          className: classes.mergedChip,
-          icon: <MergeIcon fontSize="small" />,
-        };
+        return (
+          <MergedChip
+            icon={<MergeIcon fontSize="small" />}
+            label="Merged"
+            size="small"
+          />
+        );
       case 'CLOSED':
-        return {
-          label: 'Closed',
-          className: classes.closedChip,
-          icon: <CloseIcon fontSize="small" />,
-        };
+        return (
+          <ClosedChip
+            icon={<CloseIcon fontSize="small" />}
+            label="Closed"
+            size="small"
+          />
+        );
       default:
-        return {
-          label: pullRequest.state,
-          className: classes.closedChip,
-        };
+        return <ClosedChip label={pullRequest.state} size="small" />;
     }
   };
 
-  const chipProps = getChipProps();
-
   return (
-    <ListItem className={classes.listItem} alignItems="flex-start">
+    <StyledListItem alignItems="flex-start">
       <ListItemAvatar>
-        <Avatar
+        <StyledAvatar
           alt={pullRequest.author?.login || 'Unknown'}
           src={pullRequest.author?.avatarUrl}
         />
       </ListItemAvatar>
       <ListItemText
+        disableTypography
         primary={
-          <Link href={pullRequest.url} target="_blank" rel="noopener">
-            <Typography variant="h6">
+          <PRLink
+            href={pullRequest.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <PRTitle>
               #{pullRequest.number} {pullRequest.title}
-            </Typography>
-          </Link>
+            </PRTitle>
+          </PRLink>
         }
         secondary={
-          <Box className={classes.secondaryInfo}>
-            <Chip
-              icon={chipProps.icon}
-              label={chipProps.label}
-              size="small"
-              className={chipProps.className}
-            />
-            <Typography variant="body2" color="textSecondary">
+          <SecondaryInfo>
+            {renderStateChip()}
+            <Typography variant="body2" color="text.secondary">
               Created {formattedDate} by{' '}
               {pullRequest.author?.login || 'Unknown'}
             </Typography>
-          </Box>
+          </SecondaryInfo>
         }
       />
-    </ListItem>
+    </StyledListItem>
   );
 };
 

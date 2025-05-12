@@ -1,29 +1,55 @@
 import React from 'react';
-import { Typography, Box, Chip, Link, makeStyles } from '@material-ui/core';
+import { Typography, Box, Chip, Link, styled } from '@mui/material'; // Updated from @material-ui/core
 import {
   Star as StarIcon,
   CallSplit as ForkIcon,
   Link as LinkIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { Repository } from '@/types/github.types';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    marginBottom: theme.spacing(4),
+// Styled components
+const HeaderContainer = styled(Box)(({ theme }) => ({
+  marginBottom: theme.spacing(4),
+}));
+
+const RepoDescription = styled(Typography)(({ theme }) => ({
+  marginTop: theme.spacing(1),
+  marginBottom: theme.spacing(2),
+  color: theme.palette.text.secondary,
+}));
+
+const StatsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+  gap: theme.spacing(2),
+  marginTop: theme.spacing(1),
+}));
+
+const StyledChip = styled(Chip)(({ theme }) => ({
+  margin: theme.spacing(0.5),
+  borderColor: theme.palette.divider,
+  '& .MuiChip-label': {
+    fontWeight: 500,
   },
-  description: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(2),
+}));
+
+const ViewLink = styled(Link)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  color: theme.palette.primary.main,
+  textDecoration: 'none',
+  '&:hover': {
+    textDecoration: 'underline',
   },
-  stats: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: theme.spacing(2),
-    marginTop: theme.spacing(1),
+  '& svg': {
+    marginRight: theme.spacing(0.5),
   },
-  chip: {
-    margin: theme.spacing(0.5),
-  },
+}));
+
+const RepoTitle = styled(Typography)(() => ({
+  fontWeight: 600,
+  wordBreak: 'break-word',
 }));
 
 interface RepositoryHeaderProps {
@@ -31,48 +57,42 @@ interface RepositoryHeaderProps {
 }
 
 const RepositoryHeader: React.FC<RepositoryHeaderProps> = ({ repository }) => {
-  const classes = useStyles();
-
   return (
-    <Box className={classes.root}>
-      <Typography variant="h4" component="h1">
-        {repository.name}
-      </Typography>
+    <HeaderContainer>
+      <RepoTitle variant="h4">{repository.name}</RepoTitle>
 
       {repository.description && (
-        <Typography variant="body1" className={classes.description}>
+        <RepoDescription variant="body1">
           {repository.description}
-        </Typography>
+        </RepoDescription>
       )}
 
-      <Box className={classes.stats}>
-        <Chip
-          icon={<StarIcon />}
+      <StatsContainer>
+        <StyledChip
+          icon={<StarIcon fontSize="small" />}
           label={`${repository.stargazerCount} stars`}
           variant="outlined"
           size="small"
-          className={classes.chip}
         />
 
-        <Chip
-          icon={<ForkIcon />}
+        <StyledChip
+          icon={<ForkIcon fontSize="small" />}
           label={`${repository.forkCount} forks`}
           variant="outlined"
           size="small"
-          className={classes.chip}
         />
 
-        <Link
+        <ViewLink
           href={repository.url}
           target="_blank"
-          rel="noopener"
-          style={{ display: 'flex', alignItems: 'center' }}
+          rel="noopener noreferrer"
+          underline="hover"
         >
-          <LinkIcon fontSize="small" style={{ marginRight: 4 }} />
+          <LinkIcon fontSize="small" />
           View on GitHub
-        </Link>
-      </Box>
-    </Box>
+        </ViewLink>
+      </StatsContainer>
+    </HeaderContainer>
   );
 };
 

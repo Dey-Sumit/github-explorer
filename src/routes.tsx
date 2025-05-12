@@ -5,10 +5,10 @@ import {
   Navigate,
   BrowserRouter as Router,
 } from 'react-router-dom';
-// import RepositoryDetail from './components/pages/repository-detail.page';
-// import RepositoryNew from './components/pages/repository-new.page';
+import RepositoryNew from './components/pages/repository-new.page';
 import RepositoryList from './components/pages/repository-list.page';
 import AppLayout from './components/layout/app-layout';
+import RepositoryDetail from './components/pages/repository-detail.page';
 
 /**
  * Application routes configuration
@@ -20,8 +20,9 @@ const Routes: React.FC = () => {
       <AppLayout>
         <RouterRoutes>
           <Route path="/" element={<RepositoryList />} />
-          {/* <Route path="/new" element={<RepositoryNew />} />
-          <Route path="/repository/:name" element={<RepositoryDetail />} /> */}
+          <Route path="/new" element={<RepositoryNew />} />
+          <Route path="/repository/:name" element={<RepositoryDetail />} />
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </RouterRoutes>
       </AppLayout>
