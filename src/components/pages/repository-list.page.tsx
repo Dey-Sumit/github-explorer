@@ -30,7 +30,7 @@ const RootContainer = styled(Container)(({ theme }) => ({
   padding: theme.spacing(3),
 }));
 
-const LoadingContainer = styled(Box)(({ theme }) => ({
+const LoadingContainer = styled(Box)(() => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
