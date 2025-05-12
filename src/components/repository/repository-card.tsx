@@ -5,50 +5,54 @@ import {
   Typography,
   Box,
   Chip,
-  makeStyles,
   useTheme,
-} from '@material-ui/core';
-import { Star as StarIcon, CallSplit as ForkIcon } from '@material-ui/icons';
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Star as StarIcon, CallSplit as ForkIcon } from '@mui/icons-material';
 import { Repository } from '../../types/github.types';
 
-const useStyles = makeStyles(theme => ({
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-    cursor: 'pointer',
-    '&:hover': {
-      transform: 'translateY(-4px)',
-      boxShadow: theme.shadows[4],
-    },
+const StyledCard = styled(Card)(({ theme }) => ({
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+  cursor: 'pointer',
+  '&:hover': {
+    transform: 'translateY(-4px)',
+    boxShadow: theme.shadows[4],
   },
-  cardContent: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  repoName: {
-    marginBottom: theme.spacing(1),
-    fontWeight: 600,
-  },
-  description: {
-    flex: 1,
-    marginBottom: theme.spacing(2),
-    overflow: 'hidden',
-    display: '-webkit-box',
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: 'vertical',
-  },
-  statsContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 'auto',
-  },
-  statChip: {
-    margin: theme.spacing(0.5),
-  },
+}));
+
+const StyledCardContent = styled(CardContent)({
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+const RepoName = styled(Typography)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+  fontWeight: 600,
+}));
+
+const Description = styled(Typography)(({ theme }) => ({
+  flex: 1,
+  marginBottom: theme.spacing(2),
+  overflow: 'hidden',
+  display: '-webkit-box',
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: 'vertical',
+}));
+
+const StatsContainer = styled(Box)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginTop: 'auto',
+});
+
+const StatChip = styled(Chip)(({ theme }) => ({
+  margin: theme.spacing(0.5),
+  padding: theme.spacing(0.5),
 }));
 
 interface RepositoryCardProps {
@@ -60,7 +64,6 @@ export const RepositoryCard = ({
   repository,
   onClick,
 }: RepositoryCardProps) => {
-  const classes = useStyles();
   const theme = useTheme();
 
   const handleClick = () => {
@@ -68,33 +71,25 @@ export const RepositoryCard = ({
   };
 
   return (
-    <Card variant="outlined" className={classes.card} onClick={handleClick}>
-      <CardContent className={classes.cardContent}>
-        <Typography variant="h6" className={classes.repoName}>
-          {repository.name}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          className={classes.description}
-        >
+    <StyledCard variant="outlined" onClick={handleClick}>
+      <StyledCardContent>
+        <RepoName variant="h6">{repository.name}</RepoName>
+        <Description variant="body2" color="text.secondary">
           {repository.description || 'No description provided'}
-        </Typography>
+        </Description>
 
-        <Box className={classes.statsContainer}>
+        <StatsContainer>
           <Box>
-            <Chip
+            <StatChip
               icon={<StarIcon fontSize="small" />}
               label={repository.stargazerCount}
               size="small"
-              className={classes.statChip}
               variant="outlined"
             />
-            <Chip
+            <StatChip
               icon={<ForkIcon fontSize="small" />}
               label={repository.forkCount}
               size="small"
-              className={classes.statChip}
               variant="outlined"
             />
           </Box>
@@ -102,7 +97,7 @@ export const RepositoryCard = ({
             <Chip
               label={repository.primaryLanguage.name}
               size="small"
-              style={{
+              sx={{
                 backgroundColor:
                   repository.primaryLanguage.color || theme.palette.grey[300],
                 color: theme.palette.getContrastText(
@@ -111,8 +106,8 @@ export const RepositoryCard = ({
               }}
             />
           )}
-        </Box>
-      </CardContent>
-    </Card>
+        </StatsContainer>
+      </StyledCardContent>
+    </StyledCard>
   );
 };

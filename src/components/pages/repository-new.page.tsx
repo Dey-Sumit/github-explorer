@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
-  Container,
   Typography,
   TextField,
   Button,
@@ -10,28 +9,38 @@ import {
   Paper,
   CircularProgress,
   Snackbar,
-} from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
-import { makeStyles } from '@material-ui/core/styles';
+  Alert,
+  styled,
+} from '@mui/material';
 import { CREATE_REPOSITORY } from '@/services/github/mutations';
 import { CreateRepositoryResponse } from '@/types/github.types';
+import { ROUTES } from '@/routes/constants';
 
-const useStyles = makeStyles(theme => ({
-  paper: {
-    padding: theme.spacing(4),
-    marginTop: theme.spacing(4),
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: theme.spacing(3),
-  },
-  submitButton: {
-    marginTop: theme.spacing(2),
-  },
-  header: {
-    marginBottom: theme.spacing(4),
-  },
+const Container = styled(Box)(({ theme }) => ({
+  maxWidth: theme.breakpoints.values.md,
+  margin: '0 auto',
+}));
+
+const FormContainer = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(4),
+  marginTop: theme.spacing(4),
+  backgroundColor: theme.palette.background.paper,
+  border: `1px solid ${theme.palette.divider}`,
+}));
+
+const FormContent = styled('form')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(3),
+}));
+
+const HeaderContainer = styled(Box)(({ theme }) => ({
+  marginBottom: theme.spacing(4),
+}));
+
+const PageTitle = styled(Typography)(({ theme }) => ({
+  marginBottom: theme.spacing(1),
+  fontWeight: 600,
 }));
 
 interface CreateRepositoryVariables {
@@ -42,8 +51,7 @@ interface CreateRepositoryVariables {
 }
 
 const CreateRepository: React.FC = () => {
-  const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [formState, setFormState] = useState({
     name: '',
@@ -57,9 +65,11 @@ const CreateRepository: React.FC = () => {
     onCompleted: data => {
       // Redirect to repository detail
       if (data?.createRepository?.repository?.id) {
-        history.push(`/repository/${data.createRepository.repository.name}`);
+        navigate(
+          ROUTES.getRepositoryDetailPath(data.createRepository.repository.name)
+        );
       } else {
-        history.push('/');
+        navigate(ROUTES.HOME);
       }
     },
   });
@@ -86,19 +96,17 @@ const CreateRepository: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="md">
-      <Box className={classes.header}>
-        <Typography variant="h4" component="h1">
-          Create a new repository
-        </Typography>
-        <Typography variant="body1" color="textSecondary">
+    <Container>
+      <HeaderContainer>
+        <PageTitle variant="h4">Create a new repository</PageTitle>
+        <Typography variant="body1" color="text.secondary">
           A repository contains all project files, including the revision
           history.
         </Typography>
-      </Box>
+      </HeaderContainer>
 
-      <Paper className={classes.paper} elevation={1}>
-        <form onSubmit={handleSubmit} className={classes.form}>
+      <FormContainer elevation={0}>
+        <FormContent onSubmit={handleSubmit}>
           <TextField
             label="Repository name"
             name="name"
@@ -119,21 +127,30 @@ const CreateRepository: React.FC = () => {
             fullWidth
             variant="outlined"
             multiline
-            rows={2}
+            minRows={2}
+            InputProps={{
+              sx: {
+                backgroundColor: 'background.paper',
+              },
+            }}
           />
 
           <Button
             type="submit"
             variant="contained"
-            color="primary"
-            className={classes.submitButton}
+            color="success"
             disabled={loading || !formState.name}
-            startIcon={loading && <CircularProgress size={20} />}
+            sx={{
+              mt: 2,
+              alignSelf: 'flex-start',
+              px: 3,
+            }}
+            startIcon={loading ? <CircularProgress size={20} /> : null}
           >
             Create repository
           </Button>
-        </form>
-      </Paper>
+        </FormContent>
+      </FormContainer>
 
       {error && (
         <Snackbar open autoHideDuration={6000}>

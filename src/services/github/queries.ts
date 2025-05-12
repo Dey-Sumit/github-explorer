@@ -57,8 +57,16 @@ export const GET_REPOSITORY_DETAILS = gql`
       forkCount
       createdAt
       updatedAt
-      pullRequests(first: 10, states: [OPEN, CLOSED, MERGED]) {
+      pullRequests(
+        first: 100
+        states: [OPEN, CLOSED, MERGED]
+        orderBy: { field: UPDATED_AT, direction: DESC }
+      ) {
         totalCount
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
         edges {
           node {
             id
@@ -66,6 +74,7 @@ export const GET_REPOSITORY_DETAILS = gql`
             title
             state
             createdAt
+            updatedAt
             author {
               login
               avatarUrl

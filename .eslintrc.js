@@ -49,6 +49,7 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
+    'react/require-default-props': 'off',
 
     // Import
     'import/extensions': [
@@ -75,10 +76,11 @@ module.exports = {
       },
       rules: {
         'no-undef': 'off', // TypeScript already handles this
+        '@typescript-eslint/no-non-null-assertion': 'off',
       },
     },
     {
-      files: ['*.config.js', 'webpack.config.js'],
+      files: ['*.config.js'],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
       },
