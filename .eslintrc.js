@@ -75,10 +75,11 @@ module.exports = {
       },
       rules: {
         'no-undef': 'off', // TypeScript already handles this
+        '@typescript-eslint/no-non-null-assertion': 'off',
       },
     },
     {
-      files: ['*.config.js', 'webpack.config.js'],
+      files: ['*.config.js', 'webpack.config.js', 'vite.config.ts'],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
       },

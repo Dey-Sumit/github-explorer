@@ -2,48 +2,64 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import {
-  Container,
   Box,
   Paper,
   Tabs,
   Tab,
   CircularProgress,
   Typography,
-  makeStyles,
-} from '@material-ui/core';
+  styled,
+} from '@mui/material';
 import { GET_REPOSITORY_DETAILS } from '@/services/github/queries';
-import {
-  RepositoryDetailParams,
-  RepositoryDetailData,
-} from '@/types/github.types';
+import { RepositoryDetailData } from '@/types/github.types';
 import PullRequestList from '../repository/pull-request-list';
 import RepositoryHeader from '../repository/repository-header';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(3),
+// Styled components
+const DetailContainer = styled(Box)(() => ({
+  width: '100%',
+  margin: '0 auto',
+}));
+
+const ContentPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  backgroundColor: theme.palette.background.paper,
+  border: `1px solid ${theme.palette.divider}`,
+  borderRadius: theme.shape.borderRadius,
+}));
+
+const StyledTabs = styled(Tabs)(({ theme }) => ({
+  marginBottom: theme.spacing(3),
+  borderBottom: `1px solid ${theme.palette.divider}`,
+  '& .MuiTab-root': {
+    textTransform: 'none',
+    fontWeight: 600,
+    fontSize: '0.875rem',
+    minWidth: 0,
+    marginRight: theme.spacing(3),
+    padding: theme.spacing(1, 0),
   },
-  paper: {
-    padding: theme.spacing(3),
-  },
-  tabs: {
-    marginBottom: theme.spacing(2),
-  },
-  loadingContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '50vh',
-  },
-  errorContainer: {
-    padding: theme.spacing(3),
-    textAlign: 'center',
+  '& .MuiTabs-indicator': {
+    height: 3,
   },
 }));
 
+const LoadingContainer = styled(Box)({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  minHeight: '50vh',
+});
+
+const ErrorContainer = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(3),
+  textAlign: 'center',
+}));
+
 const RepositoryDetail: React.FC = () => {
-  const classes = useStyles();
-  const { name } = useParams<RepositoryDetailParams>();
+  const { name } = useParams<{
+    name: string;
+  }>();
   const [tabValue, setTabValue] = useState(0);
 
   const username = 'Dey-Sumit';
@@ -62,87 +78,92 @@ const RepositoryDetail: React.FC = () => {
     event: React.ChangeEvent<unknown>,
     newValue: number
   ) => {
-    console.log('Tab changed to:', event);
-
     setTabValue(newValue);
   };
 
   if (loading) {
     return (
-      <Box className={classes.loadingContainer}>
+      <LoadingContainer>
         <CircularProgress />
-      </Box>
+      </LoadingContainer>
     );
   }
 
   if (error) {
     return (
-      <Container>
-        <Box className={classes.errorContainer}>
+      <DetailContainer>
+        <ErrorContainer>
           <Typography color="error" variant="h6">
             Error: {error.message}
           </Typography>
-        </Box>
-      </Container>
+        </ErrorContainer>
+      </DetailContainer>
     );
   }
 
   if (!data || !data.repository) {
     return (
-      <Container>
-        <Box className={classes.errorContainer}>
+      <DetailContainer>
+        <ErrorContainer>
           <Typography variant="h6">Repository not found</Typography>
-        </Box>
-      </Container>
+        </ErrorContainer>
+      </DetailContainer>
     );
   }
 
   const { repository } = data;
   const pullRequests = repository.pullRequests.edges.map(edge => edge.node);
 
+  const openPRCount = pullRequests.filter(pr => pr.state === 'OPEN').length;
+  const closedPRCount = pullRequests.filter(
+    pr => pr.state === 'CLOSED' || pr.state === 'MERGED'
+  ).length;
+
   return (
-    <Container className={classes.root}>
-      <Paper className={classes.paper} elevation={1}>
+    <DetailContainer>
+      <ContentPaper elevation={0}>
         <RepositoryHeader repository={repository} />
 
-        <Tabs
+        <StyledTabs
           value={tabValue}
           onChange={handleTabChange}
           indicatorColor="primary"
           textColor="primary"
-          className={classes.tabs}
+          aria-label="Pull request tabs"
         >
           <Tab
-            label={`Open (${
-              pullRequests.filter(pr => pr.state === 'OPEN').length
-            })`}
+            label={`Open (${openPRCount})`}
+            id="tab-open"
+            aria-controls="panel-open"
           />
           <Tab
-            label={`Closed (${
-              pullRequests.filter(
-                pr => pr.state === 'CLOSED' || pr.state === 'MERGED'
-              ).length
-            })`}
+            label={`Closed (${closedPRCount})`}
+            id="tab-closed"
+            aria-controls="panel-closed"
           />
-        </Tabs>
+        </StyledTabs>
 
-        {tabValue === 0 && (
-          <PullRequestList
-            pullRequests={pullRequests}
-            loading={false}
-            tabState="OPEN"
-          />
-        )}
+        <Box role="tabpanel" id="panel-open" hidden={tabValue !== 0}>
+          {tabValue === 0 && (
+            <PullRequestList
+              pullRequests={pullRequests}
+              loading={false}
+              tabState="OPEN"
+            />
+          )}
+        </Box>
 
-        {tabValue === 1 && (
-          <PullRequestList
-            pullRequests={pullRequests}
-            loading={false}
-            tabState="CLOSED"
-          />
-        )}
-      </Paper>
-    </Container>
+        <Box role="tabpanel" id="panel-closed" hidden={tabValue !== 1}>
+          {tabValue === 1 && (
+            <PullRequestList
+              pullRequests={pullRequests}
+              loading={false}
+              tabState="CLOSED"
+            />
+          )}
+        </Box>
+      </ContentPaper>
+    </DetailContainer>
   );
 };
 

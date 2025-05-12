@@ -9,7 +9,7 @@ import { RetryLink } from '@apollo/client/link/retry';
 import { onError } from '@apollo/client/link/error';
 
 // Dev environment detection
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = import.meta.env.MODE === 'development';
 
 // Custom logging link (dev only)
 const loggingLink = new ApolloLink((operation, forward) => {
@@ -76,10 +76,7 @@ const httpLink = createHttpLink({
 
 // Authentication link
 const authLink = setContext((_, { headers }) => {
-  const token =
-    process.env.REACT_APP_GITHUB_TOKEN ||
-    localStorage.getItem('github_token') ||
-    '';
+  const token = import.meta.env.VITE_GITHUB_TOKEN;
   return {
     headers: {
       ...headers,
