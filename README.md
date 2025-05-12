@@ -16,6 +16,17 @@ A production-quality React application that interacts with GitHub's GraphQL API.
 
 ## 🛠️ Technology Stack
 
+## Current Stack (v2.0)
+- React 18.x
+- Apollo Client 3.8.x with enhanced caching
+- Material-UI 7.x with modern design system
+- TypeScript 5.x
+- Vite for faster development and builds
+- Node.js v20
+Preview : https://github-explorer-wine.vercel.app/
+
+---
+
 ### Initial Stack (v1.0)
 - React 16.10.1
 - Apollo Client 3.6.2
@@ -24,13 +35,12 @@ A production-quality React application that interacts with GitHub's GraphQL API.
 - Webpack 5.x for bundling
 - Node.js v16
 
-### Current Stack (v2.0)
-- React 18.x
-- Apollo Client 3.8.x with enhanced caching
-- Material-UI 7.x with modern design system
-- TypeScript 5.x
-- Vite for faster development and builds
-- Node.js v20
+Preview : https://githux.netlify.app/
+
+---
+
+
+#
 
 ## 📋 Prerequisites
 
