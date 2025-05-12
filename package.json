@@ -51,7 +51,7 @@
     "graphql": "^16.11.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "5.3.4",
+    "react-router-dom": "6",
     "vite": "^6.3.5",
     "vite-tsconfig-paths": "^5.1.4"
   },

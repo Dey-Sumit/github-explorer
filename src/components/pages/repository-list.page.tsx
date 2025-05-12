@@ -5,9 +5,8 @@ import {
   CircularProgress,
   Grid,
   Box,
-  Container,
   Button,
-  Divider,
+  Paper,
   styled,
 } from '@mui/material';
 import {
@@ -15,49 +14,73 @@ import {
   NavigateBefore as PrevIcon,
 } from '@mui/icons-material';
 import { RepositoryCard } from '@/components/repository/repository-card';
-import UserHeader from '@/components/repository/user-header';
 import { GET_USER_REPOSITORIES } from '@/services/github/queries';
 import {
   UserRepositoriesData,
   UserRepositoriesVariables,
   Repository,
 } from '@/types/github.types';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { GITHUB_API } from '@/constants';
 
-const ITEMS_PER_PAGE = 6;
-
-const RootContainer = styled(Container)(({ theme }) => ({
-  padding: theme.spacing(3),
-}));
-
-const LoadingContainer = styled(Box)(() => ({
+const LoadingOverlay = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
   display: 'flex',
+  alignItems: 'center',
   justifyContent: 'center',
-  alignItems: 'center',
-  minHeight: '50vh',
+  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  zIndex: 1,
+  borderRadius: theme.shape.borderRadius,
 }));
 
-const StyledDivider = styled(Divider)(({ theme }) => ({
-  margin: theme.spacing(2, 0),
-}));
-
-const RepositoriesHeader = styled(Box)(({ theme }) => ({
+const ContentContainer = styled(Paper)(({ theme }) => ({
   display: 'flex',
-  alignItems: 'center',
-  marginBottom: theme.spacing(1),
+  flexDirection: 'column',
+  flex: 1,
+  overflow: 'hidden', // Prevent content overflow
+  borderRadius: theme.shape.borderRadius,
+  border: `1px solid ${theme.palette.divider}`,
+}));
+
+const ScrollableContent = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(3),
+  overflowY: 'auto',
+  flex: 1,
 }));
 
 const PaginationContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: theme.spacing(4),
+  padding: theme.spacing(2),
+  borderTop: `1px solid ${theme.palette.divider}`,
+  backgroundColor: theme.palette.background.paper,
 }));
 
-const RepositoryList: React.FC = () => {
-  const username = 'Dey-Sumit';
+const LoadingContainer = styled(Box)({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  minHeight: '50vh',
+});
 
-  const history = useHistory();
+const RepositoryHeader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: theme.spacing(2),
+}));
+
+const { ITEMS_PER_PAGE } = GITHUB_API;
+
+const RepositoryList: React.FC = () => {
+  const navigate = useNavigate();
+
+  const username = 'Dey-Sumit';
 
   // Track page cursors for navigation
   const [pageInfo, setPageInfo] = useState({
@@ -132,9 +155,9 @@ const RepositoryList: React.FC = () => {
 
   const handleRepositoryClick = useCallback(
     (repository: Repository) => {
-      history.push(`/repository/${repository.name}`);
+      navigate(`/repository/${repository.name}`);
     },
-    [history]
+    [navigate]
   );
 
   if (loading && !data) {
@@ -147,62 +170,44 @@ const RepositoryList: React.FC = () => {
 
   if (error) {
     return (
-      <Container>
+      <Box>
         <Typography color="error" variant="h6">
           Error: {error.message}
         </Typography>
-      </Container>
+      </Box>
     );
   }
 
   return (
-    <RootContainer>
-      <UserHeader username={username} avatarUrl={data?.user?.avatarUrl || ''} />
+    <ContentContainer elevation={0}>
+      <ScrollableContent>
+        <RepositoryHeader>
+          <Typography variant="h5" component="h2">
+            Repositories ({totalCount})
+          </Typography>
 
-      <StyledDivider />
+          <Typography variant="body2" color="text.secondary">
+            Page {pageInfo.currentPage} of {totalPages}
+          </Typography>
+        </RepositoryHeader>
 
-      <RepositoriesHeader>
-        <Typography variant="h5" component="h2">
-          Repositories ({totalCount})
-        </Typography>
-      </RepositoriesHeader>
-
-      <Typography variant="body2" color="text.secondary" gutterBottom>
-        Page {pageInfo.currentPage} of {totalPages}
-      </Typography>
-
-      {repositories.length === 0 ? (
-        <Typography>No repositories found</Typography>
-      ) : (
-        <>
-          <Box
-            sx={{
-              position: 'relative',
-              minHeight: 400,
-            }}
-          >
+        {repositories.length === 0 ? (
+          <Typography>No repositories found</Typography>
+        ) : (
+          <Box sx={{ position: 'relative' }}>
             {isLoadingMore && (
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                  zIndex: 1,
-                }}
-              >
+              <LoadingOverlay>
                 <CircularProgress />
-              </Box>
+              </LoadingOverlay>
             )}
 
-            <Grid container spacing={3}>
+            <Grid
+              container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
+            >
               {repositories.map(({ node }) => (
-                <Grid item xs={12} sm={6} md={4} key={node.id}>
+                <Grid key={node.id} size={{ xs: 4, sm: 4, md: 4 }}>
                   <RepositoryCard
                     repository={node}
                     onClick={handleRepositoryClick}
@@ -211,38 +216,35 @@ const RepositoryList: React.FC = () => {
               ))}
             </Grid>
           </Box>
+        )}
+      </ScrollableContent>
 
-          <PaginationContainer>
-            <Button
-              variant="outlined"
-              startIcon={<PrevIcon />}
-              onClick={handlePrevPage}
-              disabled={pageInfo.currentPage === 1 || isLoadingMore}
-            >
-              Previous
-            </Button>
+      <PaginationContainer>
+        <Button
+          variant="outlined"
+          startIcon={<PrevIcon />}
+          onClick={handlePrevPage}
+          disabled={pageInfo.currentPage === 1 || isLoadingMore}
+          sx={{ mr: 2 }}
+        >
+          Previous
+        </Button>
 
-            <Box sx={{ mx: 3, display: 'flex', alignItems: 'center' }}>
-              <Typography variant="body1">
-                Page {pageInfo.currentPage} of {totalPages}
-              </Typography>
-              {isLoadingMore && (
-                <CircularProgress size={20} sx={{ marginLeft: 1 }} />
-              )}
-            </Box>
+        <Typography variant="body2" sx={{ mx: 2 }}>
+          {pageInfo.currentPage} of {totalPages}
+        </Typography>
 
-            <Button
-              variant="outlined"
-              endIcon={<NextIcon />}
-              onClick={handleNextPage}
-              disabled={!pageData?.hasNextPage || isLoadingMore}
-            >
-              Next
-            </Button>
-          </PaginationContainer>
-        </>
-      )}
-    </RootContainer>
+        <Button
+          variant="outlined"
+          endIcon={<NextIcon />}
+          onClick={handleNextPage}
+          disabled={!pageData?.hasNextPage || isLoadingMore}
+          sx={{ ml: 2 }}
+        >
+          Next
+        </Button>
+      </PaginationContainer>
+    </ContentContainer>
   );
 };
 
