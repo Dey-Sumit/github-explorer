@@ -1,14 +1,13 @@
 import React from 'react';
 import {
   Route,
-  Routes as RouterRoutes,
-  Navigate,
+  Switch,
+  Redirect,
   BrowserRouter as Router,
 } from 'react-router-dom';
-import RepositoryNew from './components/pages/repository-new.page';
+// import RepositoryDetail from './components/pages/repository-detail.page';
+// import RepositoryNew from './components/pages/repository-new.page';
 import RepositoryList from './components/pages/repository-list.page';
-import AppLayout from './components/layout/app-layout';
-import RepositoryDetail from './components/pages/repository-detail.page';
 
 /**
  * Application routes configuration
@@ -17,15 +16,12 @@ import RepositoryDetail from './components/pages/repository-detail.page';
 const Routes: React.FC = () => {
   return (
     <Router>
-      <AppLayout>
-        <RouterRoutes>
-          <Route path="/" element={<RepositoryList />} />
-          <Route path="/new" element={<RepositoryNew />} />
-          <Route path="/repository/:name" element={<RepositoryDetail />} />
-
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </RouterRoutes>
-      </AppLayout>
+      <Switch>
+        <Route exact path="/" component={RepositoryList} />
+        {/* <Route path="/new" component={RepositoryNew} />
+        <Route path="/repository/:name" component={RepositoryDetail} /> */}
+        <Redirect to="/" />
+      </Switch>
     </Router>
   );
 };

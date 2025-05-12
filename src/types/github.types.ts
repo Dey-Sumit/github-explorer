@@ -72,6 +72,10 @@ export interface PullRequest {
   } | null;
 }
 
+export interface RepositoryDetailParams {
+  name: string;
+}
+
 export interface RepositoryDetailData {
   repository: Repository & {
     pullRequests: {
