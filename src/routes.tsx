@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck : will fix later
 import React from 'react';
 import {
   Route,
@@ -7,9 +5,9 @@ import {
   Redirect,
   BrowserRouter as Router,
 } from 'react-router-dom';
-import RepositoryDetail from './components/pages/repository-detail.page';
+// import RepositoryDetail from './components/pages/repository-detail.page';
+// import RepositoryNew from './components/pages/repository-new.page';
 import RepositoryList from './components/pages/repository-list.page';
-import RepositoryNew from './components/pages/repository-new.page';
 
 /**
  * Application routes configuration
@@ -20,8 +18,8 @@ const Routes: React.FC = () => {
     <Router>
       <Switch>
         <Route exact path="/" component={RepositoryList} />
-        <Route path="/new" component={RepositoryNew} />
-        <Route path="/repository/:name" component={RepositoryDetail} />
+        {/* <Route path="/new" component={RepositoryNew} />
+        <Route path="/repository/:name" component={RepositoryDetail} /> */}
         <Redirect to="/" />
       </Switch>
     </Router>

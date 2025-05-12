@@ -1,29 +1,29 @@
-import { createTheme } from '@material-ui/core/styles';
-import { blue, grey } from '@material-ui/core/colors';
+import { createTheme } from '@mui/material/styles';
 
-// Create a theme instance
 const theme = createTheme({
   palette: {
     primary: {
-      main: blue[600],
+      main: '#556cd6',
     },
     secondary: {
-      main: grey[800],
+      main: '#19857b',
+    },
+    error: {
+      main: '#f44336',
+    },
+    background: {
+      default: '#fff',
     },
   },
-  typography: {
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
+  components: {
+    // Override component styles
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+        },
+      },
+    },
   },
 });
 
