@@ -25,6 +25,10 @@ const StyledToolbar = styled(Toolbar)({
 
 const MainContainer = styled(Container)(({ theme }) => ({
   padding: theme.spacing(2),
+
+  [theme.breakpoints.up('md')]: {
+    padding: theme.spacing(3),
+  },
   display: 'flex',
   flexDirection: 'column',
   minHeight: 'calc(100vh - 48px)',
@@ -68,7 +72,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 color="success"
                 startIcon={<AddIcon />}
               >
-                New
+                New Repository
               </Button>
             )}
           </Box>

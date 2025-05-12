@@ -49,6 +49,7 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
+    'react/require-default-props': 'off',
 
     // Import
     'import/extensions': [
@@ -79,7 +80,7 @@ module.exports = {
       },
     },
     {
-      files: ['*.config.js', 'webpack.config.js', 'vite.config.ts'],
+      files: ['*.config.js'],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
       },

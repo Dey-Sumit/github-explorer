@@ -11,7 +11,6 @@ import { styled } from '@mui/material/styles';
 import { Star as StarIcon, CallSplit as ForkIcon } from '@mui/icons-material';
 import { Repository } from '../../types/github.types';
 
-// Convert makeStyles to styled components
 const StyledCard = styled(Card)(({ theme }) => ({
   height: '100%',
   display: 'flex',
@@ -53,6 +52,7 @@ const StatsContainer = styled(Box)({
 
 const StatChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
+  padding: theme.spacing(0.5),
 }));
 
 interface RepositoryCardProps {
@@ -74,10 +74,7 @@ export const RepositoryCard = ({
     <StyledCard variant="outlined" onClick={handleClick}>
       <StyledCardContent>
         <RepoName variant="h6">{repository.name}</RepoName>
-        <Description
-          variant="body2"
-          color="text.secondary" // Changed from textSecondary
-        >
+        <Description variant="body2" color="text.secondary">
           {repository.description || 'No description provided'}
         </Description>
 
