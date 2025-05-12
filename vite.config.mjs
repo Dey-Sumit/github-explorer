@@ -11,5 +11,17 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Group MUI components into their own chunk
+          mui: ['@mui/material', '@mui/icons-material'],
+          // Group React into its own chunk
+          react: ['react', 'react-dom'],
+          // Group Apollo client into its own chunk
+          apollo: ['@apollo/client'],
+        },
+      },
+    },
   },
 });
