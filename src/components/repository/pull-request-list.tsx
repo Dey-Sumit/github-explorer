@@ -1,27 +1,25 @@
 import React from 'react';
-import {
-  List,
-  Typography,
-  Box,
-  CircularProgress,
-  makeStyles,
-} from '@material-ui/core';
+import { List, Typography, Box, CircularProgress, styled } from '@mui/material'; // Updated from @material-ui/core
 import { PullRequest } from '@/types/github.types';
 import PullRequestItem from './pull-request-item';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    marginTop: theme.spacing(2),
-  },
-  noData: {
-    padding: theme.spacing(3),
-    textAlign: 'center',
-  },
-  loading: {
-    display: 'flex',
-    justifyContent: 'center',
-    padding: theme.spacing(4),
-  },
+// Styled components
+const StyledList = styled(List)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+}));
+
+const EmptyState = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(6),
+  textAlign: 'center',
+  borderRadius: theme.shape.borderRadius,
+  border: `1px dashed ${theme.palette.divider}`,
+  backgroundColor: 'rgba(255, 255, 255, 0.02)', // Subtle highlight for empty state
+}));
+
+const LoadingContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  padding: theme.spacing(4),
 }));
 
 interface PullRequestListProps {
@@ -35,8 +33,6 @@ const PullRequestList: React.FC<PullRequestListProps> = ({
   loading,
   tabState,
 }) => {
-  const classes = useStyles();
-
   // Filter pull requests based on selected tab
   const filteredPullRequests =
     tabState === 'OPEN'
@@ -47,28 +43,33 @@ const PullRequestList: React.FC<PullRequestListProps> = ({
 
   if (loading) {
     return (
-      <Box className={classes.loading}>
-        <CircularProgress />
-      </Box>
+      <LoadingContainer>
+        <CircularProgress size={30} />
+      </LoadingContainer>
     );
   }
 
   if (filteredPullRequests.length === 0) {
     return (
-      <Box className={classes.noData}>
-        <Typography variant="body1" color="textSecondary">
+      <EmptyState>
+        <Typography variant="body1" color="text.secondary">
           No {tabState.toLowerCase()} pull requests found
         </Typography>
-      </Box>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          {tabState === 'OPEN'
+            ? 'Pull requests that are still being reviewed appear here.'
+            : 'Completed pull requests appear here.'}
+        </Typography>
+      </EmptyState>
     );
   }
 
   return (
-    <List className={classes.root} disablePadding>
+    <StyledList disablePadding>
       {filteredPullRequests.map(pullRequest => (
         <PullRequestItem key={pullRequest.id} pullRequest={pullRequest} />
       ))}
-    </List>
+    </StyledList>
   );
 };
 
