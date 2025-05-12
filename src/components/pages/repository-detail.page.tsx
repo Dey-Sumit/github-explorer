@@ -12,17 +12,21 @@ import {
 } from '@mui/material';
 import { GET_REPOSITORY_DETAILS } from '@/services/github/queries';
 import { RepositoryDetailData } from '@/types/github.types';
+import { GITHUB_API } from '@/constants';
 import PullRequestList from '../repository/pull-request-list';
 import RepositoryHeader from '../repository/repository-header';
 
-// Styled components
 const DetailContainer = styled(Box)(() => ({
   width: '100%',
   margin: '0 auto',
 }));
 
 const ContentPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(3),
+  padding: theme.spacing(2),
+
+  [theme.breakpoints.up('md')]: {
+    padding: theme.spacing(3),
+  },
   backgroundColor: theme.palette.background.paper,
   border: `1px solid ${theme.palette.divider}`,
   borderRadius: theme.shape.borderRadius,
@@ -62,13 +66,11 @@ const RepositoryDetail: React.FC = () => {
   }>();
   const [tabValue, setTabValue] = useState(0);
 
-  const username = 'Dey-Sumit';
-
   const { loading, error, data } = useQuery<RepositoryDetailData>(
     GET_REPOSITORY_DETAILS,
     {
       variables: {
-        owner: username,
+        owner: GITHUB_API.USERNAME,
         name,
       },
     }

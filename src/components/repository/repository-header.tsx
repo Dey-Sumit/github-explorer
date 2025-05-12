@@ -7,7 +7,6 @@ import {
 } from '@mui/icons-material';
 import { Repository } from '@/types/github.types';
 
-// Styled components
 const HeaderContainer = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(4),
 }));
@@ -28,6 +27,7 @@ const StatsContainer = styled(Box)(({ theme }) => ({
 
 const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
+  padding: theme.spacing(0.5),
   borderColor: theme.palette.divider,
   '& .MuiChip-label': {
     fontWeight: 500,

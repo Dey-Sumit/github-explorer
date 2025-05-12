@@ -80,8 +80,6 @@ const { ITEMS_PER_PAGE } = GITHUB_API;
 const RepositoryList: React.FC = () => {
   const navigate = useNavigate();
 
-  const username = 'Dey-Sumit';
-
   // Track page cursors for navigation
   const [pageInfo, setPageInfo] = useState({
     currentPage: 1,
@@ -96,7 +94,7 @@ const RepositoryList: React.FC = () => {
     UserRepositoriesVariables
   >(GET_USER_REPOSITORIES, {
     variables: {
-      login: username,
+      login: GITHUB_API.USERNAME,
       first: ITEMS_PER_PAGE,
       after: currentCursor,
     },
@@ -145,8 +143,6 @@ const RepositoryList: React.FC = () => {
 
   const handlePrevPage = () => {
     if (pageInfo.currentPage === 1) return;
-
-    // Just update the page - this changes currentCursor, triggering a new query
     setPageInfo(prev => ({
       ...prev,
       currentPage: prev.currentPage - 1,
