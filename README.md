@@ -2,7 +2,13 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+
 A production-quality React application that interacts with GitHub's GraphQL API. This project demonstrates clean architecture, proper Git practices, and effective technical debt management.
+
+## 📌 Live Demos
+
+- **Current Version (v2.0)**: [GitHub Explorer on Vercel](https://github-explorer-wine.vercel.app/) - Experience the upgraded stack with React 19, Material-UI 7, and Vite
+- **Initial Version (v1.0)**: [GitHux on Netlify](https://githux.netlify.app/) - See the original implementation with React 16, Material-UI 4, and Webpack
 
 ## 🚀 Features
 
@@ -16,16 +22,14 @@ A production-quality React application that interacts with GitHub's GraphQL API.
 
 ## 🛠️ Technology Stack
 
-## Current Stack (v2.0)
-- React 18.x
-- Apollo Client 3.8.x with enhanced caching
+### Current Stack (v2.0)
+- React 19.x with improved performance and concurrent rendering
+- Apollo Client 3.6.2 with enhanced caching
 - Material-UI 7.x with modern design system
-- TypeScript 5.x
-- Vite for faster development and builds
-- Node.js v20
-Preview : https://github-explorer-wine.vercel.app/
-
----
+- TypeScript 4.9.5 for type safety
+- Vite 6.3.x for faster development and builds (70% faster than Webpack)
+- Node.js v20 for improved performance and newer JavaScript features
+- React Router v6.x for routing
 
 ### Initial Stack (v1.0)
 - React 16.10.1
@@ -33,19 +37,21 @@ Preview : https://github-explorer-wine.vercel.app/
 - Material-UI 4.12.4
 - TypeScript 4.9.5
 - Webpack 5.x for bundling
+- React Router v5.x for routing
 - Node.js v16
 
-Preview : https://githux.netlify.app/
-
----
-
-
-#
+To setup the initial version (v1.0), checkout the tagged release:
+```bash
+git checkout v1.0.0
+```
 
 ## 📋 Prerequisites
 
 - Node.js v20.x (for current version)
 - Yarn 1.22.x or higher
+- GitHub Personal Access Token with the following scopes:
+  - `repo` (Full control of private repositories)
+  - `user` (Read and write user profile data)
 
 ## 🔧 Installation
 
@@ -62,7 +68,9 @@ yarn install
 
 3. Set up your GitHub personal access token
    - Create a `.env` file in the root directory (reference from .env.example)
-   - Add your GitHub token: `VITE_GITHUB_TOKEN=your_token_here`
+   - Add your GitHub token:
+     - For current stack (v2.0): `VITE_GITHUB_TOKEN=your_token_here`
+     - For initial stack (v1.0): `REACT_APP_GITHUB_TOKEN=your_token_here`
 
 ## 🚀 Development
 
@@ -75,26 +83,31 @@ The application will be available at `http://localhost:3000` with hot module rep
 
 ## Scripts Reference
 
-The project includes the following scripts:
-
+### Current Stack (v2.0)
 ```bash
 # Start the development server
 yarn start
 
-# Run TypeScript type checking
-yarn typecheck
+# Build for production
+yarn build
 
-# Lint code
+# Preview production build
+yarn preview
+
+# Lint and format code
 yarn lint
-
-# Fix linting issues automatically
 yarn lint:fix
-
-# Format code with Prettier
 yarn format
 
-# Check code formatting
-yarn format:check
+# Type checking
+yarn typecheck
+```
+
+### Initial Stack (v1.0)
+When using the initial version (v1.0.0), the core scripts remain the same but use Webpack:
+```bash
+# Start the development server
+yarn start
 
 # Build for production
 yarn build
@@ -115,6 +128,12 @@ This project uses Husky and lint-staged to run checks before committing:
 - Commits will be blocked if there are any linting or formatting issues
 
 The hooks are automatically installed when you run `yarn install` through the `prepare` script.
+
+### Testing
+While the project currently focuses on static type checking and linting for quality assurance, the architecture is designed to be testable. Future improvements will include:
+- Jest for unit testing
+- React Testing Library for component testing
+- Cypress for end-to-end testing
 
 ## 🏗️ Building for Production
 
@@ -149,23 +168,6 @@ src/
 └── App.tsx           # Main App component
 ```
 
-## 🔄 Upgrade Process
-
-The upgrade from the initial stack to the current one was completed in phases:
-
-1. **Webpack to Vite Migration**
-   - Replaced webpack configuration with Vite
-   - Updated environment variable handling
-   - Improved build performance and hot module replacement
-
-2. **React & Material-UI Upgrade**
-   - Migrated from React 16 to React 18
-   - Updated all Material-UI components to v7
-   - Implemented new React features like Concurrent Mode
-
-3. **Node.js Version Upgrade**
-   - Updated from Node.js v16 to v20
-   - Updated all dependencies to be compatible with Node.js v20
 
 ## Git Workflow
 
@@ -194,6 +196,47 @@ We follow the [Conventional Commits](https://www.conventionalcommits.org/) speci
 - `test:` for adding or fixing tests
 - `chore:` for tooling and dependency updates
 
+## ❓ Troubleshooting
+
+### Common Issues
+
+1. **GitHub API Rate Limiting**
+   - Problem: "API rate limit exceeded" errors
+   - Solution: Generate a new Personal Access Token with appropriate scopes or wait until your rate limit resets
+
+2. **Environment Variables Not Loading**
+   - Problem: GitHub token not being read by the application
+   - Solution:
+     - For Vite (v2.0): Make sure your token is prefixed with `VITE_`
+     - For CRA (v1.0): Make sure your token is prefixed with `REACT_APP_`
+     - Restart the development server after changing environment variables
+
+3. **Type Errors After Updating Dependencies**
+   - Problem: TypeScript errors after running `yarn install`
+   - Solution: Run `yarn typecheck` to identify specific issues, and update type definitions as needed
+
+4. **Vite Build Issues**
+   - Problem: Build fails with module resolution errors
+   - Solution: Check for absolute imports or paths that might need to be updated in the `vite.config.ts` file
+
+## 🔮 Future Roadmap
+
+- Add comprehensive test suite with Jest and React Testing Library
+- Implement user authentication for accessing private repositories
+- Add dark mode theme support
+- Implement GitHub Issues management
+- Add GitHub Actions integration to view workflows
+- Support for organization repositories
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'feat: Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 📄 License
 
