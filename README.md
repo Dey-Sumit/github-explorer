@@ -51,7 +51,7 @@ Preview : https://githux.netlify.app/
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/github-explorer.git
+git clone https://github.com/Dey-Sumit/github-explorer.git
 cd github-explorer
 ```
 
@@ -61,8 +61,8 @@ yarn install
 ```
 
 3. Set up your GitHub personal access token
-   - Create a `.env` file in the root directory
-   - Add your GitHub token: `VITE_GITHUB_AUTH_TOKEN=your_token_here`
+   - Create a `.env` file in the root directory (reference from .env.example)
+   - Add your GitHub token: `VITE_GITHUB_TOKEN=your_token_here`
 
 ## 🚀 Development
 
@@ -71,7 +71,7 @@ Run the development server:
 yarn start
 ```
 
-The application will be available at `http://localhost:5173` with hot module replacement for fast development.
+The application will be available at `http://localhost:3000` with hot module replacement for fast development.
 
 ## Scripts Reference
 
@@ -194,14 +194,6 @@ We follow the [Conventional Commits](https://www.conventionalcommits.org/) speci
 - `test:` for adding or fixing tests
 - `chore:` for tooling and dependency updates
 
-## 📈 Performance Improvements
-
-The upgraded stack provides significant performance improvements:
-
-- **Development Experience**: Vite provides instant HMR with no bundling, reducing development server startup time by ~80%
-- **Build Time**: Production builds are now ~65% faster
-- **Runtime Performance**: React 18 improvements and optimized bundle size reduce initial load time by ~40%
-- **Memory Usage**: Improved Apollo cache configuration reduces memory usage by ~30%
 
 ## 📄 License
 
