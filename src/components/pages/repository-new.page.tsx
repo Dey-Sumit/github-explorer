@@ -50,7 +50,7 @@ interface CreateRepositoryVariables {
   };
 }
 
-const CreateRepository: React.FC = () => {
+const CreateRepository = () => {
   const navigate = useNavigate();
 
   const [formState, setFormState] = useState({
@@ -128,11 +128,6 @@ const CreateRepository: React.FC = () => {
             variant="outlined"
             multiline
             minRows={2}
-            InputProps={{
-              sx: {
-                backgroundColor: 'background.paper',
-              },
-            }}
           />
 
           <Button
